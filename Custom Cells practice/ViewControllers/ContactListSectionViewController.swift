@@ -26,7 +26,7 @@ class ContactListSectionViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "contact", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
         var content = cell.defaultContentConfiguration()
         let person = persons[indexPath.section]
@@ -40,32 +40,46 @@ class ContactListSectionViewController: UITableViewController {
         cell.contentConfiguration = content
         return cell
     }
+}
+
+// MARK: - UITableViewDelegate
+
+extension ContactListSectionViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-}
-
-// MARK: - UITableViewDelegate
-extension ContactListSectionViewController {
+    
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let fullNameLabel = UILabel(
-            frame: CGRect(
-                x: 16,
-                y: 3,
-                width: tableView.frame.width,
-                height: 20
-            )
-        )
-        fullNameLabel.text = persons[section].fullName
-        fullNameLabel.font = UIFont.boldSystemFont(ofSize: 17)
-        fullNameLabel.textColor = .white
-        
-        let contentView = UIView()
-        contentView.addSubview(fullNameLabel)
-        
-        return contentView
+        let cell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as? HeaderTableViewCell
+        let person = persons[section]
+        cell?.fullNameLabel.text = person.fullName
+        return cell
     }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        50
+    }
+    /*
+     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+     let fullNameLabel = UILabel(
+     frame: CGRect(
+     x: 16,
+     y: 3,
+     width: tableView.frame.width,
+     height: 20
+     )
+     )
+     fullNameLabel.text = persons[section].fullName
+     fullNameLabel.font = UIFont.boldSystemFont(ofSize: 17)
+     fullNameLabel.textColor = .white
+     
+     let contentView = UIView()
+     contentView.addSubview(fullNameLabel)
+     
+     return contentView
+     }
+     */
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         view.backgroundColor = .gray
